@@ -12,6 +12,12 @@ class AccessLog extends Model
     protected $table = 'accessLogs';
     use HasFactory;
 
+    /**
+     * ログの書き込み
+     *
+     * @param [type] $request
+     * @return void
+     */
     public function set($request)
     {
         try {

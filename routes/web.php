@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BookController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +22,12 @@ Route::get('/', function () {
 Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('index');
 Route::get('/book/{keyword}', 'App\Http\Controllers\BookApiController@makeUrl');
 
+// 今回開発するメイン機能
+Route::group(['prefix' => 'book', 'as' => 'book.', 'middleware' => 'auth'], function () {
+    Route::get('/', [BookController::class, 'index'])->name('index');
+});
+
+// 他の機能は後々可能性がある程度
+
 Auth::routes();
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
