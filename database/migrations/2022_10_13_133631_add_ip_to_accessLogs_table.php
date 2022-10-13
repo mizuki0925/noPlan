@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddIpToLogsTable extends Migration
+class AddIpToaccessLogsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class AddIpToLogsTable extends Migration
      */
     public function up()
     {
-        Schema::table('logs', function (Blueprint $table) {
+        Schema::table('accessLogs', function (Blueprint $table) {
             $table->string('userId')->nullable()->change();
             $table->string('ip')->after('userAgent')->comment('IPアドレス');
         });
@@ -26,7 +26,7 @@ class AddIpToLogsTable extends Migration
      */
     public function down()
     {
-        Schema::table('logs', function (Blueprint $table) {
+        Schema::table('accessLogs', function (Blueprint $table) {
             $table->string('userId')->comment('ユーザID');
             $table->dropColumn('ip');
         });

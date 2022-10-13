@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLogsTable extends Migration
+class CreateaccessLogsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateLogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('logs', function (Blueprint $table) {
+        Schema::create('accessLogs', function (Blueprint $table) {
             $table->id();
             $table->string('userId')->comment('ユーザID');
             $table->string('body')->comment('内容');
-            $table->string('query')->comment('実行クエリ');
+            $table->string('query')->nullable()->comment('実行クエリ');
             $table->string('userAgent')->comment('ユーザエージェント');
             $table->timestamps();
         });
@@ -30,6 +30,6 @@ class CreateLogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('logs');
+        Schema::dropIfExists('accessLogs');
     }
 }
