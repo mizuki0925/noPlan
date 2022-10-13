@@ -15,7 +15,7 @@ class CreateLogsTable extends Migration
     {
         Schema::create('logs', function (Blueprint $table) {
             $table->id();
-            $table->string('userId')->unique()->comment('ユーザID');
+            $table->string('userId')->comment('ユーザID');
             $table->string('body')->comment('内容');
             $table->string('query')->comment('実行クエリ');
             $table->string('userAgent')->comment('ユーザエージェント');
