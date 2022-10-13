@@ -17,7 +17,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('index');
+Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('index');
+Route::get('/book/{keyword}', 'App\Http\Controllers\BookApiController@makeUrl');
 
 Auth::routes();
 

@@ -69,6 +69,14 @@ return [
 
     'timezone' => 'Asia/Tokyo',
 
+    /**
+     * Google Api Key
+     * 
+     * 
+     */
+
+    'google_api_key' => env('GOOGLE_API_KEY'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
