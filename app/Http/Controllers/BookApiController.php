@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use GuzzleHttp;
+use GuzzleHttp\Client;
 
 class BookApiController extends Controller
 {
@@ -16,15 +16,16 @@ class BookApiController extends Controller
      * @param [type] $Keyword
      * @return void
      */
-    public function makeUrl($Keyword)
+    public function apiExec(Request $request)
     {
+        // urlの作成とAPIの実行は切り離した方が良いかも？（url部分はモデルに書く？）
         $baseurl = 'https://www.googleapis.com/books/v1/volumes';
         $params = [];
         $params['key'] = config('app.google_api_key');
-        $params['maxResults'] = 20;
+        $params['maxResults'] = 2;
         $params['orderBy'] = 'relevance';
         $params['country'] = 'JP';
-        $params['q'] = $Keyword;
+        $params['q'] = $request->keyword;
 
         ksort($params);
 
@@ -33,25 +34,24 @@ class BookApiController extends Controller
             $search .= '&' . $key . '=' . $value;
         }
         $search = substr($search, 1);
-
+        
         $url = $baseurl . '?' . $search;
 
-        return $url;
-    }
+        // APIの実行
 
-    
-    /**
-     * Undocumented function
-     * 
-     * makeUrlで発行したurlを元に実際にAPIを叩く
-     * 戻り値はとりあえず全部用意しておいた方が良いかも
-     *
-     * @param [type] $url
-     * @return void
-     */
+        $client = new Client();
+        $response = $client->request('GET', $url);
+        // 受け取りデータ
+        $responseData = json_decode($response->getBody(), true);
 
-    function apiExec($url)
-    {
-        
+        dd($responseData);
+        return $responseData;
+
+        // 検索実行データの保存を実行（検索ワードとかの保存程度でいいかも）
+
+        // 受け取ったjsonを$responceに配列で各要素を作成
+
+        // 成形したデータをviewに出力
+
     }
 }
