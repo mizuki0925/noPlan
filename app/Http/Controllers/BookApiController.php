@@ -6,24 +6,22 @@ use Google\Service\CloudSourceRepositories\Repo;
 use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Models\ApiHistory;
-use App\Traits\BookApiTrait;
+use App\Traits\BookApi;
 
 class BookApiController extends Controller
 {
 
     /**
-     * Undocumented function
-     *
-     * キーワードを入力するとapiのurlを自動で生成してくれるメソッド
+     * 
      * 
      * @param [type] $Keyword
      * @return void
      */
     public function create(Request $request)
     {
-        $url = BookApiTrait::makeUrl($request->keyword);
+        $url = BookApi::makeUrl($request->keyword);
 
-        $detailList = BookApiTrait::execApi($url);
+        $detailList = BookApi::exec($url);
 
         // 検索履歴の保存
         ApiHistory::set($request);

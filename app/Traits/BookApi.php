@@ -4,7 +4,7 @@ namespace App\Traits;
 
 use GuzzleHttp\Client;
 
-trait BookApiTrait
+trait BookApi
 {
 
     /**
@@ -43,7 +43,7 @@ trait BookApiTrait
      * @param [type] $url
      * @return json
      */
-    public static function execApi($url)
+    public static function exec($url)
     {
         try {
             $client = new Client();
