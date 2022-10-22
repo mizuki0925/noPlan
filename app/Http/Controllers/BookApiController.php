@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Google\Service\CloudSourceRepositories\Repo;
 use Illuminate\Http\Request;
-use GuzzleHttp\Client;
+use App\Models\Book;
+use App\Models\ApiHistory;
+use App\Traits\BookApiTrait;
 
 class BookApiController extends Controller
 {
@@ -16,42 +19,19 @@ class BookApiController extends Controller
      * @param [type] $Keyword
      * @return void
      */
-    public function apiExec(Request $request)
+    public function create(Request $request)
     {
-        // urlの作成とAPIの実行は切り離した方が良いかも？（url部分はモデルに書く？）
-        $baseurl = 'https://www.googleapis.com/books/v1/volumes';
-        $params = [];
-        $params['key'] = config('app.google_api_key');
-        $params['maxResults'] = 2;
-        $params['orderBy'] = 'relevance';
-        $params['country'] = 'JP';
-        $params['q'] = $request->keyword;
+        $url = BookApiTrait::makeUrl($request->keyword);
 
-        ksort($params);
+        $detailList = BookApiTrait::execApi($url);
 
-        $search = '';
-        foreach ($params as $key => $value) {
-            $search .= '&' . $key . '=' . $value;
-        }
-        $search = substr($search, 1);
-        
-        $url = $baseurl . '?' . $search;
+        // 検索履歴の保存
+        ApiHistory::set($request);
 
-        // APIの実行
-
-        $client = new Client();
-        $response = $client->request('GET', $url);
-        // 受け取りデータ
-        $responseData = json_decode($response->getBody(), true);
-
-        dd($responseData);
-        return $responseData;
-
-        // 検索実行データの保存を実行（検索ワードとかの保存程度でいいかも）
+        dd($detailList);
 
         // 受け取ったjsonを$responceに配列で各要素を作成
 
         // 成形したデータをviewに出力
-
     }
 }
