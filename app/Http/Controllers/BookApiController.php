@@ -2,56 +2,34 @@
 
 namespace App\Http\Controllers;
 
+use Google\Service\CloudSourceRepositories\Repo;
 use Illuminate\Http\Request;
-use GuzzleHttp;
+use App\Models\Book;
+use App\Models\ApiHistory;
+use App\Traits\BookApi;
 
 class BookApiController extends Controller
 {
 
     /**
-     * Undocumented function
-     *
-     * キーワードを入力するとapiのurlを自動で生成してくれるメソッド
+     * 
      * 
      * @param [type] $Keyword
      * @return void
      */
-    public function makeUrl($Keyword)
+    public function create(Request $request)
     {
-        $baseurl = 'https://www.googleapis.com/books/v1/volumes';
-        $params = [];
-        $params['key'] = config('app.google_api_key');
-        $params['maxResults'] = 20;
-        $params['orderBy'] = 'relevance';
-        $params['country'] = 'JP';
-        $params['q'] = $Keyword;
+        $url = BookApi::makeUrl($request->keyword);
 
-        ksort($params);
+        $detailList = BookApi::exec($url);
 
-        $search = '';
-        foreach ($params as $key => $value) {
-            $search .= '&' . $key . '=' . $value;
-        }
-        $search = substr($search, 1);
+        // 検索履歴の保存
+        ApiHistory::set($request);
 
-        $url = $baseurl . '?' . $search;
+        dd($detailList);
 
-        return $url;
-    }
+        // 受け取ったjsonを$responceに配列で各要素を作成
 
-    
-    /**
-     * Undocumented function
-     * 
-     * makeUrlで発行したurlを元に実際にAPIを叩く
-     * 戻り値はとりあえず全部用意しておいた方が良いかも
-     *
-     * @param [type] $url
-     * @return void
-     */
-
-    function apiExec($url)
-    {
-        
+        // 成形したデータをviewに出力
     }
 }
