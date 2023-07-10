@@ -18,6 +18,7 @@ class BookApiController extends Controller
      */
     public function makeUrl($Keyword)
     {
+        // dd($Keyword);
         $baseurl = 'https://www.googleapis.com/books/v1/volumes';
         $params = [];
         $params['key'] = config('app.google_api_key');
@@ -35,6 +36,8 @@ class BookApiController extends Controller
         $search = substr($search, 1);
 
         $url = $baseurl . '?' . $search;
+
+        // dd($url);
 
         return $url;
     }
